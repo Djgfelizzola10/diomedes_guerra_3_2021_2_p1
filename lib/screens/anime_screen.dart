@@ -1,8 +1,10 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:anime_app/components/loader_componet.dart';
 import 'package:anime_app/helpers/api_helper.dart';
+import 'package:anime_app/models/anime.dart';
 import 'package:anime_app/models/data.dart';
 import 'package:anime_app/models/response.dart';
+import 'package:anime_app/screens/anime_info_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -114,23 +116,26 @@ Widget _getListView() {
         children: _data.animes.map((e) {
           return Card(
             child: InkWell(
-              onTap: () {},
+              onTap:  () => _goFact(e),
               child: Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.all(5),
                 padding: EdgeInsets.all(5),
                 child: Row(
                   children: <Widget>[
-                    CachedNetworkImage(
-                      imageUrl: e.Img,
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                      fit: BoxFit.cover,
-                      height: 80,
-                      width: 80,
-                      placeholder: (context, url) => Image(
-                        image: AssetImage('assets/noimage.png'),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: CachedNetworkImage(
+                        imageUrl: e.Img,
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                         fit: BoxFit.cover,
-                        height: 80,
-                        width: 80,
+                        height: 60,
+                        width: 60,
+                        placeholder: (context, url) => Image(
+                          image: NetworkImage('https://www.kananss.com/wp-content/uploads/2021/06/51-519068_loader-loading-progress-wait-icon-loading-icon-png-1.png'),
+                          fit: BoxFit.cover,
+                          height: 60,
+                          width: 60,
+                        ),
                       ),
                     ),
                     Expanded(
@@ -154,7 +159,7 @@ Widget _getListView() {
                         ),
                       )
                     ),
-                    Icon(Icons.arrow_forward_ios, size: 40,)
+                    Icon(Icons.arrow_forward_ios, size: 35,)
                   ],
                 ),
               ),
@@ -164,6 +169,20 @@ Widget _getListView() {
       ), 
     );
  }
+
+ void _goFact(Anime anime) async { 
+    String? result = await  Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => AnimeInfoScreen(
+          anime: anime
+        ) 
+      )
+    );
+    if (result == 'yes') {
+      _getData();
+    }
+  }
 
  Widget _noContent() {
    return Center(
@@ -230,5 +249,7 @@ Widget _getListView() {
         );
       });
   }
-  _filter() {}
+   void _filter() {
+
+  }
 }
