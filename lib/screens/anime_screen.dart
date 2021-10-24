@@ -22,6 +22,7 @@ bool _isFiltered=false;
 String _search='';
 bool _showLoader=false;
 late Data _data;
+List<Anime> _animeList=[];
 
  @override
   void initState() {
@@ -96,6 +97,7 @@ late Data _data;
 
     setState(() {
       _data=response.result;
+      _animeList=_data.animes;
     });
   }
 
@@ -113,7 +115,7 @@ Widget _getListView() {
    return RefreshIndicator(
       onRefresh: _getData,
       child: ListView(
-        children: _data.animes.map((e) {
+        children: _animeList.map((e) {
           return Card(
             color: Colors.green[50],
             child: InkWell(
@@ -159,7 +161,7 @@ Widget _getListView() {
                         ),
                       )
                     ),
-                    Icon(Icons.arrow_forward_ios, size: 35,)
+                    Icon(Icons.double_arrow_rounded, size: 35,color: Colors.green,)
                   ],
                 ),
               ),
@@ -215,9 +217,10 @@ Widget _getListView() {
       context: context,
       builder: (context){
         return AlertDialog(
+          backgroundColor: Colors.green[50],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10)),
-            title: Text('Filtrar animes'),
+            title: Text('Filtrar animes', textAlign: TextAlign.center,),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -228,7 +231,7 @@ Widget _getListView() {
                   decoration: InputDecoration(
                     hintText: 'Criterio de busqueda...',
                     labelText: 'Buscar',
-                    suffixIcon: Icon(Icons.search)
+                    suffixIcon: Icon(Icons.search_rounded)
                   ),
                   onChanged: (value){
                       _search=value;
@@ -238,6 +241,7 @@ Widget _getListView() {
             ),
             actions: <Widget>[
               TextButton(
+                style: ButtonStyle(alignment: Alignment.bottomRight),
                 onPressed: ()=> Navigator.of(context).pop(),
                 child: Text('Cancelar')
                 ),
@@ -250,6 +254,21 @@ Widget _getListView() {
       });
   }
    void _filter() {
+    if (_search.isEmpty) {
+      return;
+    }
 
+    List<Anime> filteredList = [];
+    for (var anime in _data.animes) {
+      if (anime.Name.toLowerCase().contains(_search.toLowerCase())) {
+        filteredList.add(anime);
+      }
+    }
+    setState(() {
+      _animeList = filteredList;
+      _isFiltered = true;
+    });
+
+    Navigator.of(context).pop();
   }
 }
