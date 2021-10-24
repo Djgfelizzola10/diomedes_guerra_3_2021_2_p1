@@ -34,7 +34,7 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text('${_anime.Name}'),
+        title: Text('${_anime.Name.toUpperCase()}'),
       ),
       body: Center(
         child: _showLoader 
@@ -60,36 +60,32 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen> {
       onRefresh: _getData2,
       child: ListView(
         children: _data2.fact.map((e) {
-          return Card(
-              child: Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(5),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Column(
+          return Container(
+            color: Colors.green[100],
+            margin: EdgeInsets.all(1),
+            padding: EdgeInsets.all(10),
+            child: Card(
+              child: Column(
+                      children: <Widget>[
+                        Container(
+
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                  e.fact,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
+                                    Expanded(
+                                      child: Text(
+                                        '${e.factId} - ${e.fact}',
+                                        style: TextStyle(
+                                          fontSize: 20
+                                        ),
+                                      ),
+                                    ),
                               ],
-                            ),
-                          ],
+                          ),
                         ),
-                      )
-                    ),
-                  ],
-                ),
+                      ],
               ),
+            ),
           );
         }).toList(),
       ), 
@@ -171,7 +167,7 @@ class _AnimeInfoScreenState extends State<AnimeInfoScreen> {
                   height: 150,
                   width: 150,
                   placeholder: (context, url) => Image(
-                    image: AssetImage('https://www.kananss.com/wp-content/uploads/2021/06/51-519068_loader-loading-progress-wait-icon-loading-icon-png-1.png'),
+                    image: NetworkImage('https://www.kananss.com/wp-content/uploads/2021/06/51-519068_loader-loading-progress-wait-icon-loading-icon-png-1.png'),
                     fit: BoxFit.cover,
                     height: 150,
                     width: 150,

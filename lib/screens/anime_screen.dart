@@ -115,6 +115,7 @@ Widget _getListView() {
       child: ListView(
         children: _data.animes.map((e) {
           return Card(
+            color: Colors.green[50],
             child: InkWell(
               onTap:  () => _goFact(e),
               child: Container(
@@ -123,7 +124,6 @@ Widget _getListView() {
                 child: Row(
                   children: <Widget>[
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
                       child: CachedNetworkImage(
                         imageUrl: e.Img,
                         errorWidget: (context, url, error) => Icon(Icons.error),
